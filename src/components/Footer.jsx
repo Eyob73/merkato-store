@@ -71,9 +71,8 @@ function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-5 text-center text-gray-400">
-          © 2026 Merkato Store. All Rights Reserved.
+          © 2026 Merkato-Store. All Rights Reserved © .
         </div>
-
       </div>
     </footer>
   );
