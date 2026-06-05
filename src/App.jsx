@@ -1,16 +1,19 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
 import Header from "./components/Header";
 import "./App.css";
-import StatCard from "./components/StatCard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProductCard from "./components/ProductCard";
+import ProductDetail from "./page/ProductDetail";
 
 function App() {
   return (
     <div>
       <Header />
-      <StatCard title="Total Sales" value="$10,000" />
+      <div className="pt-[4.5rem]">
+        <Routes>
+          <Route path="/" element={<ProductCard />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+        </Routes>
+      </div>
     </div>
   );
 }
