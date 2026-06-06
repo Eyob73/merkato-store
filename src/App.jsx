@@ -1,20 +1,25 @@
-import Footer from "./components/Footer";
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import Header from "./components/Header";
-import StatCard from "./components/StatCard";
+import Home from './page/Home'
+import OrderTracking from './page/OrderTracking'
+import ShopingCart from './page/ShopingCart'
+import ProductDetail from './page/ProductDetail'
+import Checkout from './page/Checkout'
 
 function App() {
 
     return (
     <>
-    <div>
-      <Header />
-      <StatCard title="Total Sales" value="$10,000" />
-      <Footer />
-    </div>
+     <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/OrderTracking" element={<OrderTracking />} />
+        <Route path="/ShopingCart" element={<ShopingCart />} />
+        <Route path="/ProductDetail" element={<ProductDetail />} />
+        <Route path="/CheckOut" element={<Checkout />} />
+      </Routes>
+    </BrowserRouter>
     </>
   );
  
