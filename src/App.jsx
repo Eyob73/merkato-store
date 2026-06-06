@@ -13,9 +13,8 @@ function App() {
     <div>
       <Header />
       <StatCard title="Total Sales" value="$10,000" />
-    </div>
-
       <Footer />
+    </div>
     </>
   );
  
