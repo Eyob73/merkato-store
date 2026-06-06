@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Logo from "../assets/logo.png";
+import { FaShoppingCart } from "react-icons/fa";
+import { href } from "react-router-dom";
 
 const NAV_LINKS = [
   {
@@ -14,6 +16,7 @@ const NAV_LINKS = [
   },
   { label: "About", href: "#" },
   { label: "Contact", href: "#" },
+  { label: <FaShoppingCart/>, href: "/ShopingCart"}
 ];
 
 function ChevronIcon({ className = "" }) {
@@ -153,7 +156,7 @@ export default function Header() {
               className="text-[22px] font-semibold tracking-[0.06em] text-stone-900 leading-none"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
-              Ethio<span className="text-amber-600">Buy</span>
+              Merkato<span className="text-amber-600">Store</span>
             </span>
           </a>
 

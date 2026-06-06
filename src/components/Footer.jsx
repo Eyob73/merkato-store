@@ -1,15 +1,18 @@
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white mt-10">
+    <footer className="bg-[#20263e] text-white mt-10">
       <div className="max-w-7xl mx-auto px-6 py-10">
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
           {/* Brand Section */}
           <div>
-            <h2 className="text-2xl font-bold text-yellow-400">
-              Merkato Store
-            </h2>
+            <span
+              className="text-[22px] font-semibold tracking-[0.06em] text-stone-900 leading-none"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              <span className="text-amber-600">Merkato Store</span>
+            </span>
             <p className="mt-3 text-gray-400">
               Your trusted online marketplace for quality products at
               affordable prices.

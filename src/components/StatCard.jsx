@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 
 // --- Minimalist Icons (Simplified shapes, reduced visual weight) ---
 const StarIcon = ({ filled }) => (
@@ -62,13 +63,16 @@ function ProductCard({ product }) {
   return (
     <div className="flex flex-col w-full max-w-sm bg-white border border-gray-200 rounded-md overflow-hidden">
       {/* Image Section - Clean, no badges, no wishlist */}
+      
+      <Link to="/ProductDetail">
       <div className="relative h-56 bg-gray-50 overflow-hidden">
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-contain p-4"
+          className="w-full h-full object-contain p-4n transition-transform duration-300 hover:scale-110"
         />
       </div>
+      </Link>
 
       {/* Content Section - Minimal spacing */}
       <div className="flex flex-col p-4 gap-2">
