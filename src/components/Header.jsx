@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Logo from "../assets/logo.png";
-import { FaShoppingCart } from "react-icons/fa";
-import { href } from "react-router-dom";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
   {
@@ -16,7 +15,8 @@ const NAV_LINKS = [
   },
   { label: "About", href: "#" },
   { label: "Contact", href: "#" },
-  { label: <FaShoppingCart/>, href: "/ShopingCart"}
+  { label: <FaShoppingCart />, href: "/ShopingCart" },
+  { label: <FaUser />, href: "/login" },
 ];
 
 function ChevronIcon({ className = "" }) {
@@ -187,25 +187,22 @@ export default function Header() {
             onClick={() => setMenuOpen((v) => !v)}
           >
             <span
-              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${
-                menuOpen
-                  ? "-translate-x-1/2 -translate-y-1/2 rotate-45"
-                  : "-translate-x-1/2 -translate-y-1.5"
-              }`}
+              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${menuOpen
+                ? "-translate-x-1/2 -translate-y-1/2 rotate-45"
+                : "-translate-x-1/2 -translate-y-1.5"
+                }`}
             />
 
             <span
-              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${
-                menuOpen ? "-translate-x-1/2 opacity-0" : "-translate-x-1/2"
-              }`}
+              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${menuOpen ? "-translate-x-1/2 opacity-0" : "-translate-x-1/2"
+                }`}
             />
 
             <span
-              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${
-                menuOpen
-                  ? "-translate-x-1/2 -translate-y-1/2 -rotate-45"
-                  : "-translate-x-1/2 translate-y-1.5"
-              }`}
+              className={`absolute left-1/2 top-1/2 w-5 h-0.5 bg-stone-600 rounded transition-all duration-300${menuOpen
+                ? "-translate-x-1/2 -translate-y-1/2 -rotate-45"
+                : "-translate-x-1/2 translate-y-1.5"
+                }`}
             />
           </button>
         </div>
