@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+  import { useState, useEffect, useRef } from "react";
+  import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 const NAV_LINKS = [
@@ -107,6 +108,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -120,6 +123,28 @@ export default function Header() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("user"));
+      setUser(stored || null);
+    } catch (e) {
+      setUser(null);
+    }
+
+    const onStorage = (e) => {
+      if (e.key === "user") {
+        try {
+          setUser(JSON.parse(e.newValue));
+        } catch (err) {
+          setUser(null);
+        }
+      }
+    };
+
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   return (
     <>
@@ -169,13 +194,28 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <button className="px-4 py-2 text-[13px] tracking-widest text-stone-500 border border-transparent rounded-lg hover:text-stone-900 hover:border-stone-200 hover:bg-amber-50 transition-all duration-150">
-              Log in
+            {/* Profile button always visible (before login/register) */}
+            <button
+              title={user?.name || "Profile"}
+              onClick={() => navigate("/profile")}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-stone-900 text-white text-sm font-medium"
+            >
+              {user && user.name ? user.name.charAt(0).toUpperCase() : "U"}
             </button>
-            <div className="w-px h-5 bg-stone-200 mx-1" aria-hidden="true" />
-            <button className="px-5 py-2 text-[11.5px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-lg hover:bg-amber-700 hover:border-amber-700 active:scale-[0.97] transition-all duration-150">
-              Register
-            </button>
+
+            {/* Auth actions (show when not logged in) */}
+            {!user ? (
+              <>
+                <div className="w-px h-5 bg-stone-200 mx-1" aria-hidden="true" />
+                <button className="px-4 py-2 text-[13px] tracking-widest text-stone-500 border border-transparent rounded-lg hover:text-stone-900 hover:border-stone-200 hover:bg-amber-50 transition-all duration-150">
+                  Log in
+                </button>
+                <div className="w-px h-5 bg-stone-200 mx-1" aria-hidden="true" />
+                <button className="px-5 py-2 text-[11.5px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-lg hover:bg-amber-700 hover:border-amber-700 active:scale-[0.97] transition-all duration-150">
+                  Register
+                </button>
+              </>
+            ) : null}
           </div>
 
           {/* Hamburger */}
@@ -267,12 +307,37 @@ export default function Header() {
 
           {/* Mobile Auth */}
           <div className="px-6 flex flex-col gap-3">
-            <button className="w-full py-3.5 text-[14px] tracking-wide text-stone-600 border border-stone-200 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all duration-150">
-              Log in
-            </button>
-            <button className="w-full py-3.5 text-[12px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-xl hover:bg-amber-700 hover:border-amber-700 active:scale-[0.98] transition-all duration-150">
-              Create account
-            </button>
+            {/* Profile row shown above auth actions */}
+            <div className="flex items-center gap-3 px-2">
+              <button
+                title={user?.name || "Profile"}
+                onClick={() => navigate("/profile")}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-stone-900 text-white text-sm font-medium"
+              >
+                {user && user.name ? user.name.charAt(0).toUpperCase() : "U"}
+              </button>
+              {user ? (
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-stone-900">{user.name || "User"}</div>
+                  <div className="text-xs text-stone-500">{user.email || ""}</div>
+                </div>
+              ) : null}
+            </div>
+
+            {!user ? (
+              <>
+                <button className="w-full py-3.5 text-[14px] tracking-wide text-stone-600 border border-stone-200 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all duration-150">
+                  Log in
+                </button>
+                <button className="w-full py-3.5 text-[12px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-xl hover:bg-amber-700 hover:border-amber-700 active:scale-[0.98] transition-all duration-150">
+                  Create account
+                </button>
+              </>
+            ) : (
+              <div className="px-2">
+                <button onClick={() => navigate("/profile")} className="w-full py-3.5 text-[14px] tracking-wide text-stone-600 border border-stone-200 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all duration-150">Manage profile</button>
+              </div>
+            )}
           </div>
         </div>
       </nav>

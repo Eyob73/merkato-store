@@ -1,8 +1,9 @@
 import Header from "./components/Header";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProductCard from "./components/ProductCard";
+import { Routes, Route } from "react-router-dom";
+import ProductPage from "./page/ProductPage";
 import ProductDetail from "./page/ProductDetail";
+import CustomerProfile from "./page/CustomerProfile";
 
 function App() {
   return (
@@ -10,8 +11,9 @@ function App() {
       <Header />
       <div className="pt-[4.5rem]">
         <Routes>
-          <Route path="/" element={<ProductCard />} />
+          <Route path="/" element={<ProductPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/profile" element={<CustomerProfile />} />
         </Routes>
       </div>
     </div>

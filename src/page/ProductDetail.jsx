@@ -1,67 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-const products = [
-  {
-    id: 1,
-    title: "Classic Sneakers",
-    price: "59.99",
-    image:
-      "",
-    description: "Comfortable everyday shoes with a clean finish.",
-    details:
-      "These sneakers combine lightweight cushioning with premium materials for an all-day fit.",
-    size: "Medium",
-    material: "Premium cotton blend",
-    color: "Black",
-    shipping: "Fast delivery",
-    weight: "0.7 kg",
-    warranty: "1 year",
-    sku: "SNK-001",
-  },
-  {
-    id: 2,
-    title: "Modern Watch",
-    price: "129.99",
-    image:
-      "",
-    description: "Minimal design with a durable leather strap.",
-    details:
-      "A refined watch with polished details and a comfortable leather band for daily wear.",
-    size: "One size",
-    material: "Stainless steel",
-    color: "Silver",
-    shipping: "Free shipping",
-    weight: "0.15 kg",
-    warranty: "2 years",
-    sku: "WTC-002",
-  },
-  {
-    id: 3,
-    title: "Travel Backpack",
-    price: "89.99",
-    image:
-      "",
-    description: "Roomy, lightweight, and perfect for daily carry.",
-    details:
-      "Packed with smart pockets and durable fabric, this backpack is built for travel and everyday use.",
-    size: "Large",
-    material: "Water-resistant nylon",
-    color: "Olive",
-    shipping: "2-day delivery",
-    weight: "0.95 kg",
-    warranty: "6 months",
-    sku: "BPK-003",
-  },
-];
+import { useEffect } from "react";
+import products from "../data/products";
 
 function ProductDetail() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const product = products.find((item) => String(item.id) === id) || null;
 
   useEffect(() => {
-    const selected = products.find((item) => String(item.id) === id);
-    setProduct(selected || null);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [id]);
 
   if (!product) {
@@ -72,9 +18,9 @@ function ProductDetail() {
           <p className="mt-4 text-stone-600">Please go back and select a product from the homepage.</p>
           <Link
             to="/"
-            className="mt-8 inline-flex rounded-full bg-stone-900 px-6 py-3 text-sm font-semibold text-white hover:bg-stone-800 transition"
+            className="mt-8 inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-semibold text-white hover:bg-stone-800 transition"
           >
-            Back to products
+            Back to shop
           </Link>
         </div>
       </main>
@@ -97,7 +43,7 @@ function ProductDetail() {
               </div>
               <Link
                 to="/"
-                className="inline-flex items-center justify-center rounded-full border border-stone-300 bg-white px-5 py-3 text-sm font-semibold text-stone-900 hover:bg-stone-100 transition"
+                className="inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-semibold text-white hover:bg-stone-800 transition"
               >
                 Back to shop
               </Link>
@@ -133,22 +79,12 @@ function ProductDetail() {
             <div className="rounded-3xl p-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)]">
               <h2 className="text-lg font-semibold text-stone-900">Why you'll love it</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-3xl bg-stone-50 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Comfort</p>
-                  <p className="mt-2 font-semibold text-stone-900">Soft feel</p>
-                </div>
-                <div className="rounded-3xl bg-stone-50 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Durability</p>
-                  <p className="mt-2 font-semibold text-stone-900">Long-lasting wear</p>
-                </div>
-                <div className="rounded-3xl bg-stone-50 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Fit</p>
-                  <p className="mt-2 font-semibold text-stone-900">Regular silhouette</p>
-                </div>
-                <div className="rounded-3xl bg-stone-50 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Style</p>
-                  <p className="mt-2 font-semibold text-stone-900">Modern essentials</p>
-                </div>
+                {product.highlights.map((highlight) => (
+                  <div key={highlight} className="rounded-3xl bg-stone-50 p-4">
+                    <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Feature</p>
+                    <p className="mt-2 font-semibold text-stone-900">{highlight}</p>
+                  </div>
+                ))}
               </div>
               <ul className="mt-6 space-y-3 text-stone-600">
                 <li>• Premium materials with a polished finish.</li>
@@ -164,19 +100,19 @@ function ProductDetail() {
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-3xl bg-stone-50 p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Size</p>
-                  <p className="mt-2 font-semibold text-stone-900">Medium</p>
+                  <p className="mt-2 font-semibold text-stone-900">{product.size}</p>
                 </div>
                 <div className="rounded-3xl bg-stone-50 p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Material</p>
-                  <p className="mt-2 font-semibold text-stone-900">Premium silver</p>
+                  <p className="mt-2 font-semibold text-stone-900">{product.material}</p>
                 </div>
                 <div className="rounded-3xl bg-stone-50 p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Color</p>
-                  <p className="mt-2 font-semibold text-stone-900">Black</p>
+                  <p className="mt-2 font-semibold text-stone-900">{product.color}</p>
                 </div>
                 <div className="rounded-3xl bg-stone-50 p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Shipping</p>
-                  <p className="mt-2 font-semibold text-stone-900">Fast delivery</p>
+                  <p className="mt-2 font-semibold text-stone-900">{product.shipping}</p>
                 </div>
               </div>
             </div>
