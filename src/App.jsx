@@ -9,6 +9,10 @@ import Checkout from './page/Checkout'
 import Login from './page/Login'
 
 // Admin Pages
+import AdminInventory from './page/AdminInventory'
+import AdminOrderManagement from './page/AdminOrderManagement'
+import AdminDelivery from './page/AdminDelivery'
+
 import AdminLayout from './page/admin/AdminLayout'
 import Dashboard from './page/admin/Dashboard'
 import ProductManagement from './page/admin/ProductManagement'
@@ -29,6 +33,11 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           {/* Admin Routes */}
+
+          <Route path="/AdminInventory" element={<AdminInventory />} />
+          <Route path="/AdminOrderManagement" element={<AdminOrderManagement />} />
+          <Route path="/AdminDelivery" element={<AdminDelivery />} />
+
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="products" element={<ProductManagement />} />

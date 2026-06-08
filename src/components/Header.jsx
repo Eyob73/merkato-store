@@ -17,6 +17,9 @@ const NAV_LINKS = [
   { label: "Contact", href: "#" },
   { label: <FaShoppingCart />, href: "/ShopingCart" },
   { label: <FaUser />, href: "/login" },
+  { label: "AdminDelivery", href: "/AdminDelivery" },
+  { label: "AdminInventory", href: "/AdminInventory" },
+  { label: "AdminOrderManagement", href: "/AdminOrderManagement" },
 ];
 
 function ChevronIcon({ className = "" }) {
