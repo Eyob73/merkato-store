@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
 import ProductPage from "./page/ProductPage";
 import ProductDetail from "./page/ProductDetail";
 import CustomerProfile from "./page/CustomerProfile";
@@ -10,7 +9,6 @@ import heroImg from './assets/hero.png'
 import Home from './page/Home'
 import OrderTracking from './page/OrderTracking'
 import ShopingCart from './page/ShopingCart'
-import ProductDetail from './page/ProductDetail'
 import Checkout from './page/Checkout'
 import Login from './page/Login'
 
