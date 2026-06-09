@@ -3,18 +3,8 @@ import Logo from "../assets/logo.png";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
-  {
-    label: "Shop",
-    href: "#",
-    children: ["New Arrivals", "Best Sellers", "Sale"],
-  },
-  {
-    label: "Collections",
-    href: "#",
-    children: ["Summer", "Winter", "Essentials"],
-  },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
+
+
   { label: <FaShoppingCart />, href: "/ShopingCart" },
   { label: <FaUser />, href: "/login" },
   { label: "AdminDelivery", href: "/AdminDelivery" },
