@@ -1,16 +1,79 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import products from "../data/products";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const secureImageUrl = (url) => {
+  if (!url) return "https://via.placeholder.com/480x360?text=No+Image";
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === "http:") {
+      parsed.protocol = "https:";
+      return parsed.toString();
+    }
+    return url;
+  } catch {
+    return "https://via.placeholder.com/480x360?text=No+Image";
+  }
+};
 
 function ProductDetail() {
   const { id } = useParams();
-  const product = products.find((item) => String(item.id) === id) || null;
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`https://api.escuelajs.co/api/v1/products/${id}`);
+        if (!mounted) return;
+        const p = res.data || null;
+        // Normalize to previous shape where possible
+        const normalized = p
+          ? {
+              id: p.id,
+              title: p.title,
+              price: p.price,
+              image: p.images?.[0] || p.image || "",
+              description: p.description,
+              details: p.description,
+              sku: `SKU-${p.id}`,
+              weight: p.weight || "-",
+              warranty: p.warranty || "-",
+              shipping: p.shipping || "-",
+              highlights: p.features || [],
+              size: p.size || "-",
+              material: p.material || "-",
+              color: p.color || "-",
+            }
+          : null;
+        setProduct(normalized);
+      } catch (err) {
+        if (mounted) setError(err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchProduct();
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [id]);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <main className="pt-[4.5rem] bg-[#f7f5f1] min-h-screen">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">Loading product…</div>
+      </main>
+    );
+  }
+
+  if (error || !product) {
     return (
       <main className="pt-[4.5rem] bg-[#f7f5f1] min-h-screen">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
@@ -30,9 +93,9 @@ function ProductDetail() {
   return (
     <main className="pt-[4.5rem] bg-[#f7f5f1] min-h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div className="grid gap-1 lg:grid-cols-[1.2fr_0.9fr] items-start">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.9fr] items-start">
           <div className="lg:self-start lg:sticky lg:top-[4.5rem] overflow-hidden rounded-3xl bg-white shadow-[0_18px_50px_rgba(0,0,0,0.06)]">
-            <img src={product.image} alt={product.title} className="w-full h-full max-h-[760px] object-cover" />
+            <img src={secureImageUrl(product.image)} alt={product.title} className="w-full h-full max-h-[760px] object-cover" />
           </div>
 
           <div className="space-y-1">
@@ -45,7 +108,7 @@ function ProductDetail() {
                 to="/"
                 className="inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-semibold text-white hover:bg-stone-800 transition"
               >
-                Back to shop
+                Shop
               </Link>
             </div>
 
@@ -79,7 +142,7 @@ function ProductDetail() {
             <div className="rounded-3xl p-8 shadow-[0_18px_50px_rgba(0,0,0,0.06)]">
               <h2 className="text-lg font-semibold text-stone-900">Why you'll love it</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {product.highlights.map((highlight) => (
+                {(product.highlights || []).map((highlight) => (
                   <div key={highlight} className="rounded-3xl bg-stone-50 p-4">
                     <p className="text-xs uppercase tracking-[0.24em] text-stone-400">Feature</p>
                     <p className="mt-2 font-semibold text-stone-900">{highlight}</p>
