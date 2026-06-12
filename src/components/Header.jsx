@@ -1,16 +1,13 @@
   import { useState, useEffect, useRef } from "react";
-  import { useNavigate } from "react-router-dom";
+  import { Link, useNavigate } from "react-router-dom";
+  import { getStoredUser } from "../utils/authService";
 import Logo from "../assets/logo.png";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
-
-
+  { label: "Home", href: "/" },
   { label: <FaShoppingCart />, href: "/ShopingCart" },
-  { label: <FaUser />, href: "/login" },
-  { label: "AdminDelivery", href: "/AdminDelivery" },
-  { label: "AdminInventory", href: "/AdminInventory" },
-  { label: "AdminOrderManagement", href: "/AdminOrderManagement" },
+  { label: "Admin Panel", href: "/admin", adminOnly: true },
 ];
 
 function ChevronIcon({ className = "" }) {
@@ -68,12 +65,12 @@ function NavItem({ link }) {
 
   if (!link.children) {
     return (
-      <a
-        href={link.href}
+      <Link
+        to={link.href}
         className="px-3.5 py-2 text-[13.5px] font-normal tracking-wide text-stone-500 hover:text-stone-900 hover:bg-amber-50 rounded-lg transition-all duration-150"
       >
         {link.label}
-      </a>
+      </Link>
     );
   }
 
@@ -121,25 +118,18 @@ export default function Header() {
   }, [menuOpen]);
 
   useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem("user"));
-      setUser(stored || null);
-    } catch (e) {
-      setUser(null);
-    }
+    setUser(getStoredUser());
 
-    const onStorage = (e) => {
-      if (e.key === "user") {
-        try {
-          setUser(JSON.parse(e.newValue));
-        } catch (err) {
-          setUser(null);
-        }
-      }
+    const onStorage = () => {
+      setUser(getStoredUser());
     };
 
     window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener("auth-changed", onStorage);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("auth-changed", onStorage);
+    };
   }, []);
 
   return (
@@ -183,7 +173,7 @@ export default function Header() {
             className="hidden lg:flex items-center gap-1 mx-8"
             aria-label="Main navigation"
           >
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS.filter((link) => !link.adminOnly || user?.role === 'admin').map((link) => (
               <NavItem key={link.label} link={link} />
             ))}
           </nav>
@@ -203,13 +193,13 @@ export default function Header() {
             {!user ? (
               <>
                 <div className="w-px h-5 bg-stone-200 mx-1" aria-hidden="true" />
-                <button className="px-4 py-2 text-[13px] tracking-widest text-stone-500 border border-transparent rounded-lg hover:text-stone-900 hover:border-stone-200 hover:bg-amber-50 transition-all duration-150">
+                <Link to="/login" className="px-4 py-2 text-[13px] tracking-widest text-stone-500 border border-transparent rounded-lg hover:text-stone-900 hover:border-stone-200 hover:bg-amber-50 transition-all duration-150">
                   Log in
-                </button>
+                </Link>
                 <div className="w-px h-5 bg-stone-200 mx-1" aria-hidden="true" />
-                <button className="px-5 py-2 text-[11.5px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-lg hover:bg-amber-700 hover:border-amber-700 active:scale-[0.97] transition-all duration-150">
+                <Link to="/signup" className="px-5 py-2 text-[11.5px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-lg hover:bg-amber-700 hover:border-amber-700 active:scale-[0.97] transition-all duration-150">
                   Register
-                </button>
+                </Link>
               </>
             ) : null}
           </div>
@@ -251,7 +241,7 @@ export default function Header() {
         style={{ fontFamily: "'DM Sans', sans-serif" }}
       >
         <div className="pt-2 pb-10">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.filter((link) => !link.adminOnly || user?.role === 'admin').map((link) => (
             <div key={link.label}>
               {link.children ? (
                 <>
@@ -285,12 +275,12 @@ export default function Header() {
                   </div>
                 </>
               ) : (
-                <a
-                  href={link.href}
+                <Link
+                  to={link.href}
                   className="flex items-center px-6 py-3.5 text-[16px] text-stone-900 hover:bg-amber-50 transition-colors duration-150"
                 >
                   {link.label}
-                </a>
+                </Link>
               )}
             </div>
           ))}
@@ -319,12 +309,12 @@ export default function Header() {
 
             {!user ? (
               <>
-                <button className="w-full py-3.5 text-[14px] tracking-wide text-stone-600 border border-stone-200 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all duration-150">
+                <Link to="/login" className="w-full inline-flex items-center justify-center py-3.5 text-[14px] tracking-wide text-stone-600 border border-stone-200 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all duration-150">
                   Log in
-                </button>
-                <button className="w-full py-3.5 text-[12px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-xl hover:bg-amber-700 hover:border-amber-700 active:scale-[0.98] transition-all duration-150">
+                </Link>
+                <Link to="/signup" className="w-full inline-flex items-center justify-center py-3.5 text-[12px] font-medium tracking-[0.08em] uppercase text-white bg-stone-900 border border-stone-900 rounded-xl hover:bg-amber-700 hover:border-amber-700 active:scale-[0.98] transition-all duration-150">
                   Create account
-                </button>
+                </Link>
               </>
             ) : (
               <div className="px-2">

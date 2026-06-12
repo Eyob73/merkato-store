@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getStoredUser, setStoredUser, clearStoredUser } from "../utils/authService";
 
 export default function CustomerProfile() {
 	const [form, setForm] = useState({ name: "", email: "", phone: "", address: "" });
@@ -8,7 +9,7 @@ export default function CustomerProfile() {
 
 	useEffect(() => {
 		try {
-			const stored = JSON.parse(localStorage.getItem("user"));
+			const stored = getStoredUser();
 			if (stored) setForm({
 				name: stored.name || "",
 				email: stored.email || "",
@@ -27,14 +28,15 @@ export default function CustomerProfile() {
 
 	function handleSave(e) {
 		e.preventDefault();
-		const user = { ...form };
-		localStorage.setItem("user", JSON.stringify(user));
+		const stored = getStoredUser() || {};
+		const user = { ...stored, ...form };
+		setStoredUser(user);
 		setSaved(true);
 		setTimeout(() => setSaved(false), 2000);
 	}
 
 	function handleLogout() {
-		localStorage.removeItem("user");
+		clearStoredUser();
 		navigate("/");
 	}
 

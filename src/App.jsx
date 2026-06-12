@@ -4,18 +4,12 @@ import ProductPage from "./page/ProductPage";
 import ProductDetail from "./page/ProductDetail";
 import CustomerProfile from "./page/CustomerProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import Home from './page/Home'
 import OrderTracking from './page/OrderTracking'
 import ShopingCart from './page/ShopingCart'
 import Checkout from './page/Checkout'
 import Login from './page/Login'
-
-// Admin Pages
-import AdminInventory from './page/AdminInventory'
-import AdminOrderManagement from './page/AdminOrderManagement'
-import AdminDelivery from './page/AdminDelivery'
+import Signup from './page/Signup'
+import RequireAuth from './components/RequireAuth'
 
 import AdminLayout from './page/admin/AdminLayout'
 import Dashboard from './page/admin/Dashboard'
@@ -32,21 +26,13 @@ function App() {
           <Route path="/" element={<ProductPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/profile" element={<CustomerProfile />} />
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
           <Route path="/OrderTracking" element={<OrderTracking />} />
           <Route path="/ShopingCart" element={<ShopingCart />} />
-          <Route path="/ProductDetail" element={<ProductDetail />} />
           <Route path="/CheckOut" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-          {/* Admin Routes */}
-
-          <Route path="/AdminInventory" element={<AdminInventory />} />
-          <Route path="/AdminOrderManagement" element={<AdminOrderManagement />} />
-          <Route path="/AdminDelivery" element={<AdminDelivery />} />
-
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<RequireAuth allowedRoles={['admin']}><AdminLayout/></RequireAuth>}>
             <Route index element={<Dashboard />} />
             <Route path="products" element={<ProductManagement />} />
             <Route path="categories" element={<CategoryManagement />} />
